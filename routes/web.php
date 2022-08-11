@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PagesController;
 use App\Http\Controllers\MainPagesController;
+use App\Http\Controllers\ServicePagesController;
 
 /*
 |--------------------------------------------------------------------------
@@ -20,7 +21,12 @@ use App\Http\Controllers\MainPagesController;
 // });
 Route::get('/',[PagesController::class,'index'])->name('home');
 Route::get('/admin/dashboard',[PagesController::class,'admin'])->name('admin.dashboard');
+//Main section Route
 Route::get('/admin/main',[MainPagesController::class,'index'])->name('admin.main');
+Route::put('/admin/main',[MainPagesController::class,'update'])->name('admin.main.update');
+Route::get('/admin/services/create',[ServicePagesController::class,'create'])->name('admin.services.create');
+Route::post('/admin/services/create',[ServicePagesController::class,'store'])->name('admin.services.store');
+
 Route::get('/admin/services',[PagesController::class,'services'])->name('admin.services');
 Route::get('/admin/portfolio',[PagesController::class,'portfolio'])->name('admin.portfolio');
 Route::get('/admin/about',[PagesController::class,'about'])->name('admin.about');
