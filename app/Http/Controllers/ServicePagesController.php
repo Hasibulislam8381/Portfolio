@@ -12,9 +12,11 @@ class ServicePagesController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function list()
     {
         //
+        $services=Service::all();
+        return view('pages.services.list',compact('services'));
     }
 
     /**
@@ -49,7 +51,7 @@ class ServicePagesController extends Controller
         $services->description = $request->description;
 
         $services->save();
-        return redirect()->route('admin.services.create')->with('success','New Services Created Successfully');
+        return redirect()->route('admin.services.list')->with('success','New Services Created Successfully');
     }
 
     /**
@@ -71,7 +73,8 @@ class ServicePagesController extends Controller
      */
     public function edit($id)
     {
-        //
+        $service=Service::find($id);
+        return view('pages.services.edit',compact('service'));
     }
 
     /**
@@ -83,7 +86,20 @@ class ServicePagesController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $this->validate($request,[
+            'icon' => 'required|string',
+            'title' => 'required|string',
+            'description' => 'required|string',
+        ]);
+
+        $services = Service::find($id);
+        $services->icon = $request->icon;
+        $services->title = $request->title;
+        $services->description = $request->description;
+
+        $services->save();
+        return redirect()->route('admin.services.list')->with('success','Services Updated Successfully');
+
     }
 
     /**
@@ -94,6 +110,9 @@ class ServicePagesController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $service = Service::find($id);
+        $service->delete();
+        return redirect()->route('admin.services.list')->with('error','Services Deleted Successfully');
+
     }
 }
