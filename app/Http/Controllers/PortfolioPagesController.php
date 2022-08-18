@@ -1,13 +1,21 @@
 <?php
 
 namespace App\Http\Controllers;
-use Illuminate\Support\Facades\Storage;
-
 use Illuminate\Http\Request;
 use App\Models\Portfolio;
+use Illuminate\Support\Facades\Storage;
 
 class PortfolioPagesController extends Controller
 {
+       /**
+     * Create a new controller instance.
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
     /**
      * Display a listing of the resource.
      *
@@ -16,8 +24,8 @@ class PortfolioPagesController extends Controller
     public function list()
     {
         //
-        $services=Service::all();
-        return view('pages.services.list',compact('services'));
+        $portfolios=Portfolio::all();
+        return view('pages.portfolios.list',compact('portfolios'));
     }
 
     /**
@@ -89,8 +97,8 @@ class PortfolioPagesController extends Controller
      */
     public function edit($id)
     {
-        $service=Service::find($id);
-        return view('pages.services.edit',compact('service'));
+        $portfolio=Portfolio::find($id);
+        return view('pages.portfolios.edit',compact('portfolio'));
     }
 
     /**
@@ -103,18 +111,36 @@ class PortfolioPagesController extends Controller
     public function update(Request $request, $id)
     {
         $this->validate($request,[
-            'icon' => 'required|string',
+            
             'title' => 'required|string',
+            'sub_title' => 'required|string',
             'description' => 'required|string',
+            'client' => 'required|string',
+            'category' => 'required|string',
         ]);
 
-        $services = Service::find($id);
-        $services->icon = $request->icon;
-        $services->title = $request->title;
-        $services->description = $request->description;
+        $portfolios = Portfolio::find($id);
+        $portfolios->title = $request->title;
+        $portfolios->sub_title = $request->sub_title;
+        $portfolios->description = $request->description;
+        $portfolios->client = $request->client;
+        $portfolios->category = $request->category;
+        
+        if( $request->file('big_image')){
+            $big_file = $request->file('big_image');
+            Storage::putFile('public/img',$big_file);
+            $portfolios->big_image = "storage/img/".$big_file->hashName();
+        }
+       
+       if($request->file('small_image'))
+       {
+        $small_file = $request->file('small_image');
+        Storage::putFile('public/img',$small_file);
+        $portfolios->small_image = "storage/img/".$small_file->hashName();
 
-        $services->save();
-        return redirect()->route('admin.services.list')->with('success','Services Updated Successfully');
+       }
+        $portfolios->save();
+        return redirect()->route('admin.portfolios.list')->with('success','Portfolio Updated Successfully');
 
     }
 
@@ -126,9 +152,11 @@ class PortfolioPagesController extends Controller
      */
     public function destroy($id)
     {
-        $service = Service::find($id);
-        $service->delete();
-        return redirect()->route('admin.services.list')->with('error','Services Deleted Successfully');
+        $portfolio = Portfolio::find($id);
+        @unlink(public_path($portfolio->big_image));
+        @unlink(public_path($portfolio->small_image));
+        $portfolio->delete();
+        return redirect()->route('admin.portfolios.list')->with('success','Portfolio Deleted Successfully');
 
     }
 }

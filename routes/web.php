@@ -5,6 +5,8 @@ use App\Http\Controllers\PagesController;
 use App\Http\Controllers\MainPagesController;
 use App\Http\Controllers\ServicePagesController;
 use App\Http\Controllers\PortfolioPagesController;
+use App\Http\Controllers\AboutPagesController;
+use App\Http\Controllers\ContactFormController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -21,7 +23,7 @@ use App\Http\Controllers\PortfolioPagesController;
 // });
 Route::prefix('admin')->group(function(){
     
-    Route::get('/dashboard',[PagesController::class,'admin'])->name('admin.dashboard');
+    Route::get('/dashboard',[MainPagesController::class,'admin'])->name('admin.dashboard');
     //Main section Route
     Route::get('/main',[MainPagesController::class,'index'])->name('admin.main');
     Route::put('/main',[MainPagesController::class,'update'])->name('admin.main.update');
@@ -39,6 +41,14 @@ Route::prefix('admin')->group(function(){
     Route::post('/portfolios/update/{id}',[PortfolioPagesController::class,'update'])->name('admin.portfolios.update');
     Route::delete('/portfolios/destroy/{id}',[PortfolioPagesController::class,'destroy'])->name('admin.portfolios.destroy');
 
+    //About Part 
+    Route::get('/about/create',[AboutPagesController::class,'create'])->name('admin.abouts.create');
+    Route::put('/about/create',[AboutPagesController::class,'store'])->name('admin.abouts.store');
+    Route::get('/about/list',[AboutPagesController::class,'list'])->name('admin.abouts.list');
+    Route::get('/about/edit/{id}',[AboutPagesController::class,'edit'])->name('admin.abouts.edit');
+    Route::post('/about/update/{id}',[AboutPagesController::class,'update'])->name('admin.abouts.update');
+    Route::delete('/about/destroy/{id}',[AboutPagesController::class,'destroy'])->name('admin.abouts.destroy');
+
 
 Route::get('/services',[PagesController::class,'services'])->name('admin.services');
 Route::get('/portfolio',[PagesController::class,'portfolio'])->name('admin.portfolio');
@@ -46,6 +56,8 @@ Route::get('/about',[PagesController::class,'about'])->name('admin.about');
 Route::get('/contact',[PagesController::class,'contact'])->name('admin.contact');
 });
 
+
+Route::post('/contact',[ContactFormController::class,'store'])->name('contact.store');
 Route::get('/',[PagesController::class,'index'])->name('home');
 
 

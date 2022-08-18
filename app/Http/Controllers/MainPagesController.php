@@ -7,6 +7,19 @@ use App\Models\Main;
 
 class MainPagesController extends Controller
 {
+       /**
+     * Create a new controller instance.
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+    
+    public function admin(){
+        return view('pages.admin-dashboard');
+    }
     /**
      * Display a listing of the resource.
      *
