@@ -38,8 +38,9 @@
         <!-- Masthead-->
         <header class="masthead" style="background-image: url(<?php echo $main->bc_img?>)">
             <div class="container">
-                <div class="masthead-subheading">{{$main->sub_title}}</div>
                 <div class="masthead-heading text-uppercase">{{$main->title}}</div>
+                <div class="masthead-subheading">{{$main->sub_title}}</div>
+               
                 <a class="btn btn-primary btn-xl text-uppercase" href="{{url($main->resume)}}">Resume</a>
             </div>
         </header>
@@ -76,24 +77,24 @@
                 <div class="row">
                     @if(count($portfolios)>0)
                         @foreach($portfolios as $portfolio)
-                        <div class="col-lg-4 col-sm-6 mb-4">
-                            <!-- Portfolio item 1-->
-                            <div class="portfolio-item">
-                                <a class="portfolio-link" data-bs-toggle="modal" href="#portfolioModal<?php echo $portfolio->id ?>">
-                                    <div class="portfolio-hover">
-                                        <div class="portfolio-hover-content"><i class="fas fa-plus fa-3x"></i></div>
-                                    </div>
-                                    <img class="img-fluid" src="{{url($portfolio->small_image)}}" alt="" />
-                                </a>
-                                <div class="portfolio-caption">
-                                    <div class="portfolio-caption-heading">{{$portfolio->client}}</div>
-                                    <div class="portfolio-caption-subheading text-muted">{{$portfolio->category}}</div>
+                    <div class="col-lg-4 col-sm-6 mb-4">
+                        <!-- Portfolio item 1-->
+                        <div class="portfolio-item">
+                            <a class="portfolio-link" data-bs-toggle="modal" href="#portfolioModal<?php echo $portfolio->id?>">
+                                <div class="portfolio-hover">
+                                    <div class="portfolio-hover-content"><i class="fas fa-plus fa-3x"></i></div>
                                 </div>
+                                <img class="img-fluid" src="{{url($portfolio->small_image)}}" alt="..." />
+                            </a>
+                            <div class="portfolio-caption">
+                                <div class="portfolio-caption-heading">{{$portfolio->client}}</div>
+                                <div class="portfolio-caption-subheading text-muted">{{$portfolio->category}}</div>
                             </div>
                         </div>
-                        @endforeach
+                    </div>
+					    @endforeach
                     @endif
-               
+                        {{-- end here --}}    
                 </div>
             </div>
         </section>
@@ -144,24 +145,7 @@
             </div>
         </section>
         <!-- Clients-->
-        <div class="py-5">
-            <div class="container">
-                <div class="row align-items-center">
-                    <div class="col-md-3 col-sm-6 my-3">
-                        <a href="#!"><img class="img-fluid img-brand d-block mx-auto" src="assets/img/logos/microsoft.svg" alt="..." aria-label="Microsoft Logo" /></a>
-                    </div>
-                    <div class="col-md-3 col-sm-6 my-3">
-                        <a href="#!"><img class="img-fluid img-brand d-block mx-auto" src="assets/img/logos/google.svg" alt="..." aria-label="Google Logo" /></a>
-                    </div>
-                    <div class="col-md-3 col-sm-6 my-3">
-                        <a href="#!"><img class="img-fluid img-brand d-block mx-auto" src="assets/img/logos/facebook.svg" alt="..." aria-label="Facebook Logo" /></a>
-                    </div>
-                    <div class="col-md-3 col-sm-6 my-3">
-                        <a href="#!"><img class="img-fluid img-brand d-block mx-auto" src="assets/img/logos/ibm.svg" alt="..." aria-label="IBM Logo" /></a>
-                    </div>
-                </div>
-            </div>
-        </div>
+       
         <!-- Contact-->
         <section class="page-section" id="contact">
             <div class="container">
@@ -231,7 +215,9 @@
         </footer>
         <!-- Portfolio Modals-->
         <!-- Portfolio item 1 modal popup-->
-        <div class="portfolio-modal modal fade" id="portfolioModal<?php echo $portfolio->id ?>" tabindex="-1" role="dialog" aria-hidden="true">
+        @if(count($portfolios)>0)
+         @foreach($portfolios as $portfolio)
+        <div class="portfolio-modal modal fade" id="portfolioModal<?php echo $portfolio->id?>" tabindex="-1" role="dialog" aria-hidden="true">
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="close-modal" data-bs-dismiss="modal"><img src="assets/img/close-icon.svg" alt="Close modal" /></div>
@@ -241,14 +227,10 @@
                                 <div class="modal-body">
                                     <!-- Project details-->
                                     <h2 class="text-uppercase">{{$portfolio->title}}</h2>
-                                    <p class="item-intro text-muted">{{$portfolio->sub_title}}</p>
-                                    <img class="img-fluid d-block mx-auto" src="{{url($portfolio->big_image)}}" alt="" />
+                                    <p class="item-intro text-muted">{{$portfolio->sub_itle}}</p>
+                                    <img class="img-fluid d-block mx-auto" src="{{url($portfolio->small_image)}}" alt="..." />
                                     <p>{{$portfolio->description}}</p>
                                     <ul class="list-inline">
-                                        <li>
-                                            <strong>Date:</strong>
-                                            {{$portfolio->created_at->toDateString()}}
-                                        </li>
                                         <li>
                                             <strong>Client:</strong>
                                             {{$portfolio->client}}
@@ -269,6 +251,8 @@
                 </div>
             </div>
         </div>
+        @endforeach
+        @endif
        
         <!-- Bootstrap core JS-->
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>

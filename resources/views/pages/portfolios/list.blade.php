@@ -39,14 +39,14 @@
                     <td>{{$portfolio->category}}</td>
                     <td>
                       <div class="row">
-                        <div class="col-sm-4">
-                          <a href="{{route('admin.portfolios.edit',$portfolio->id)}}" class="btn btn-primary">Edit</a>
+                        <div class="col-sm-6">
+                          <a href="{{route('admin.portfolios.edit',$portfolio->id)}}" class="btn btn-primary m-2">Edit</a>
                         </div>
-                        <div class="col-sm-3">
+                        <div class="col-sm-2">
                           <form action="{{route('admin.portfolios.destroy',$portfolio->id)}}" method="post">
                             @csrf
                             @method('DELETE')
-                           <input type="submit" name="submit" value="Delete" class="btn btn-danger">
+                           <input type="submit" name="submit" value="Delete" class="btn btn-danger m-2">
                           </form>
                         </div>
                       </div>
